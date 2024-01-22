@@ -19,7 +19,7 @@ const completeRegionsCount = computed(
 )
 
 const quotaCount = computed(
-  () => regions.filter(e => e.count <= 2500).reduce((acc, e) => acc + e.count, 0)
+  () => regions.reduce((acc, e) => acc + Math.min(e.count, 2500), 0)
 )
 
 const hoverItem = ref<{ name: string, count: number | null}>()
