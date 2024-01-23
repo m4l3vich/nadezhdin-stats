@@ -32,7 +32,6 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
-    "hammerjs": "^2.0.8",
     "node-html-parser": "^6.1.12",
     "vue-svg-pan-zoom": "^2.1.0"
   }

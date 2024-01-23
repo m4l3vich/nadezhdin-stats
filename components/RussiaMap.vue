@@ -84,6 +84,10 @@ function renderMap () {
       </SvgPanZoom>
     </ClientOnly>
 
+    <a class="map__author" href="https://m4l3vich.ru/" target="_blank">
+      made with 🖤 by m4l3vich
+    </a>
+
     <div
       v-if="hoverItem"
       class="map__hover"
@@ -165,6 +169,19 @@ function renderMap () {
     b {
       font-weight: 700;
     }
+  }
+
+  &__author {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+
+    font-size: 12px;
+    appearance: none;
+    color: black;
+    opacity: 0.5;
+    text-align: center;
+    display: block;
   }
 
   &__legend {

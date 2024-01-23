@@ -68,18 +68,16 @@ const isDialogVisible = ref<boolean>(false)
         </li>
       </ul>
 
-      <button
-        class="stats__btn stats__btn_flat stats__btn_gray"
-        :class="{ 'stats__btn_disabled': updating, 'stats__btn_spin-icon': updating }"
-        @click="() => emit('update')"
-      >
-        <Icon name="material-symbols:refresh-rounded" size="24" />
-        Обновить
-      </button>
-
-      <a class="stats__author" href="https://m4l3vich.ru/" target="_blank">
-        made with 🖤 by m4l3vich
-      </a>
+      <div class="stats-dialog__footer">
+        <button
+          class="stats__btn stats__btn_flat stats__btn_gray"
+          :class="{ 'stats__btn_disabled': updating, 'stats__btn_spin-icon': updating }"
+          @click="() => emit('update')"
+        >
+          <Icon name="material-symbols:refresh-rounded" size="24" />
+          Обновить
+        </button>
+      </div>
     </dialog>
   </section>
 </template>
@@ -151,17 +149,6 @@ const isDialogVisible = ref<boolean>(false)
       animation: spinner 1s infinite linear;
     }
   }
-
-  &__author {
-    margin-top: 16px;
-    font-size: 12px;
-    appearance: none;
-    color: black;
-    opacity: 0.5;
-    text-align: center;
-    width: 100%;
-    display: block;
-  }
 }
 
 .stats-dialog {
@@ -170,9 +157,10 @@ const isDialogVisible = ref<boolean>(false)
   position: absolute;
   box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, 0.2);
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @media screen and (min-width: 1200px) {
+    display: flex;
+    flex-wrap: wrap;
+  }
 
   --dialog_margin: 24px;
   @media screen and (max-width: 640px) {
@@ -221,16 +209,21 @@ const isDialogVisible = ref<boolean>(false)
     grid-template-columns: repeat(3, 1fr);
 
     gap: 24px;
+    flex: 1 0 auto;
 
     margin: 0;
-    margin-top: 24px;
-    padding: 32px 0;
+    margin-top: 16px;
+    padding: 16px 0;
 
     @media screen and (max-width: 640px) {
       display: flex;
       flex-wrap: wrap;
       padding: 0;
-      padding-bottom: 16px;
+      padding-top: 16px;
+    }
+
+    @media screen and (min-width: 1200px) {
+      margin-top: 0;
     }
 
     li {
@@ -259,6 +252,19 @@ const isDialogVisible = ref<boolean>(false)
 
   &__metric {
     font-size: 36px;
+  }
+
+  &__footer {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    @media screen and (min-width: 1200px) {
+      flex: 1 0 auto;
+      justify-content: flex-end;
+    }
   }
 }
 
