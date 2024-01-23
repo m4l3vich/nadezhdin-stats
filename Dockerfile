@@ -18,7 +18,7 @@ RUN yarn install --immutable && yarn cache clean
 ADD . /app
 
 # build the project
-RUN npm run build
+RUN yarn build
 
 # start final image
 FROM node:20-alpine
