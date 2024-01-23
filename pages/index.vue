@@ -1,7 +1,7 @@
 <script setup lang="ts">
 type Regions = { name: string, count: number }[]
 
-const regions = ref<Regions>()
+const regions = ref<Regions | null>(null)
 const updating = ref<boolean>(true)
 const errored = ref<boolean>(false)
 
@@ -27,14 +27,19 @@ update()
 
 <template>
   <ErrorScreen v-if="errored" @update="update" />
-  <PreloaderScreen v-else-if="!regions" />
+  <PreloaderScreen v-else-if="regions === null" />
   <RussiaMap v-else :regions="regions" :updating="updating" @update="update" />
 </template>
 
 <style>
+
 body {
   margin: 0;
   overflow-y: hidden;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  position: fixed;
 
   font-family: Inter, sans-serif;
 

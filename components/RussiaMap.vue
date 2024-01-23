@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SvgPanZoom } from 'vue-svg-pan-zoom'
+import { onMounted } from 'vue'
 import Map from '~/public/map.svg'
 
 const { regions } = defineProps<{
@@ -68,21 +68,19 @@ function renderMap () {
     })
   }
 }
+
+onMounted(() => renderMap())
 </script>
 
 <template>
   <section class="map">
-    <ClientOnly>
-      <SvgPanZoom
-        class="map__container"
-        :zoom-enabled="true"
-        :fit="true"
-        :center="true"
-        @created="renderMap"
-      >
-        <Map ref="map" class="map__svg" width="100%" height="100%" />
-      </SvgPanZoom>
-    </ClientOnly>
+    <Map
+      ref="map"
+      v-svg-pan-zoom
+      class="map__svg"
+      width="100%"
+      height="100%"
+    />
 
     <a class="map__author" href="https://m4l3vich.ru/" target="_blank">
       made with 🖤 by m4l3vich
