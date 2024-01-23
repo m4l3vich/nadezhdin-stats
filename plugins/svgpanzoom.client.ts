@@ -1,11 +1,11 @@
 import svgPanZoom from 'svg-pan-zoom'
 import Hammer from 'hammerjs'
 
-// eslint-disable
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.directive('svg-pan-zoom', {
     mounted (el) {
-      const eventsHandler = {
+      let hammer: HammerManager
+      const eventsHandler: SvgPanZoom.CustomEventHandler = {
         haltEventListeners: ['touchstart', 'touchend', 'touchmove', 'touchleave', 'touchcancel'],
         init: function (options) {
           const instance = options.instance
@@ -15,20 +15,20 @@ export default defineNuxtPlugin((nuxtApp) => {
 
           // Init Hammer
           // Listen only for pointer and touch events
-          this.hammer = Hammer(options.svgElement, {
-            inputClass: Hammer.SUPPORT_POINTER_EVENTS ? Hammer.PointerEventInput : Hammer.TouchInput
+          hammer = new Hammer(options.svgElement, {
+            inputClass: window.PointerEvent ? Hammer.PointerEventInput : Hammer.TouchInput
           })
 
           // Enable pinch
-          this.hammer.get('pinch').set({ enable: true })
+          hammer.get('pinch').set({ enable: true })
 
           // Handle double tap
-          this.hammer.on('doubletap', () => {
+          hammer.on('doubletap', () => {
             instance.zoomIn()
           })
 
           // Handle pan
-          this.hammer.on('panstart panmove', function (ev) {
+          hammer.on('panstart panmove', function (ev) {
             // On pan start reset panned variables
             if (ev.type === 'panstart') {
               pannedX = 0
@@ -42,7 +42,7 @@ export default defineNuxtPlugin((nuxtApp) => {
           })
 
           // Handle pinch
-          this.hammer.on('pinchstart pinchmove', function (ev) {
+          hammer.on('pinchstart pinchmove', function (ev) {
             // On pinch start remember initial zoom
             if (ev.type === 'pinchstart') {
               initialScale = instance.getZoom()
@@ -57,14 +57,14 @@ export default defineNuxtPlugin((nuxtApp) => {
         },
 
         destroy: function () {
-          this.hammer.destroy()
+          hammer.destroy()
         }
       }
 
       svgPanZoom(el, {
         zoomEnabled: true,
-        fit: 1,
-        center: 1,
+        fit: true,
+        center: true,
         customEventsHandler: eventsHandler
       })
     }
