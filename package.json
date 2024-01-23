@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "node-html-parser": "^6.1.12",
-    "vue-svg-pan-zoom": "^2.1.0"
+    "vue-svg-pan-zoom": "^2.1.0",
+    "yandex-metrika-module-nuxt3": "^1.5.3"
   }
 }

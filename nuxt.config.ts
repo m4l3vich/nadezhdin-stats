@@ -6,5 +6,7 @@ export default defineNuxtConfig({
     subsets: ['cyrillic']
   }], ['nuxt-svgo', {
     defaultImport: 'component'
-  }], 'nuxt-icon']
+  }], 'nuxt-icon', ['yandex-metrika-module-nuxt3', {
+    id: 96222063
+  }]]
 })
