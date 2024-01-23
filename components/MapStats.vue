@@ -100,7 +100,7 @@ const compactView = ref<boolean>(false)
         </button>
 
         <button
-          class="stats__btn stats__btn_flat stats__btn_gray stats__btn_icon"
+          class="stats__btn stats__btn_flat stats__btn_gray stats__btn_icon stats-dialog__compact-btn"
           :class="{ 'stats__btn_small': compactView }"
           @click="() => { compactView = !compactView }"
         >
@@ -203,6 +203,8 @@ const compactView = ref<boolean>(false)
   visibility: hidden;
   position: absolute;
   box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, 0.2);
+
+  z-index: 2;
 
   @media screen and (min-width: 1200px) {
     display: flex;
@@ -325,6 +327,12 @@ const compactView = ref<boolean>(false)
     @media screen and (min-width: 1200px) {
       flex: 1 0 auto;
       justify-content: flex-end;
+    }
+  }
+
+  &__compact-btn {
+    @media screen and (min-width: 640px) {
+      display: none;
     }
   }
 
