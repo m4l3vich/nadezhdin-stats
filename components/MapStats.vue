@@ -23,6 +23,7 @@ const quotaCount = computed(
 
 const dialog = ref<HTMLDialogElement>()
 const isDialogVisible = ref<boolean>(false)
+const compactView = ref<boolean>(false)
 </script>
 
 <template>
@@ -53,30 +54,72 @@ const isDialogVisible = ref<boolean>(false)
         </button>
       </header>
 
-      <ul class="stats-dialog__grid">
+      <ul class="stats-dialog__grid" :class="{ 'stats-dialog__grid_small': compactView }">
         <li>
-          <span class="stats-dialog__metric-title">Всего подписей</span>
-          <span class="stats-dialog__metric" v-text="totalCount.toLocaleString()" />
+          <span class="stats-dialog__metric-title">
+            {{ compactView ? 'Всего' : 'Всего подписей' }}
+          </span>
+          <span
+            class="stats-dialog__metric"
+            :class="{ 'stats-dialog__metric_small': compactView }"
+            v-text="totalCount.toLocaleString()"
+          />
         </li>
         <li>
-          <span class="stats-dialog__metric-title">Подписи по квоте</span>
-          <span class="stats-dialog__metric" v-text="quotaCount.toLocaleString()" />
+          <span class="stats-dialog__metric-title">
+            {{ compactView ? 'С квотой' : 'Подписи по квоте*' }}
+          </span>
+          <span
+            class="stats-dialog__metric"
+            :class="{ 'stats-dialog__metric_small': compactView }"
+            v-text="quotaCount.toLocaleString()"
+          />
         </li>
         <li>
-          <span class="stats-dialog__metric-title">Регионы с 2500 подписями</span>
-          <span class="stats-dialog__metric" v-text="completeRegionsCount" />
+          <span class="stats-dialog__metric-title">
+            {{ compactView ? 'Регионы 2 500+' : 'Регионы с 2 500 подписями' }}
+          </span>
+          <span
+            class="stats-dialog__metric"
+            :class="{ 'stats-dialog__metric_small': compactView }"
+            v-text="completeRegionsCount"
+          />
         </li>
       </ul>
 
-      <div class="stats-dialog__footer">
+      <div class="stats-dialog__buttons">
         <button
           class="stats__btn stats__btn_flat stats__btn_gray"
-          :class="{ 'stats__btn_disabled': updating, 'stats__btn_spin-icon': updating }"
+          :class="{ 'stats__btn_disabled': updating, 'stats__btn_spin-icon': updating, 'stats__btn_small': compactView }"
           @click="() => emit('update')"
         >
           <Icon name="material-symbols:refresh-rounded" size="24" />
-          Обновить
+          <template v-if="!compactView">
+            Обновить
+          </template>
         </button>
+
+        <button
+          class="stats__btn stats__btn_flat stats__btn_gray stats__btn_icon"
+          :class="{ 'stats__btn_small': compactView }"
+          @click="() => { compactView = !compactView }"
+        >
+          <Icon v-if="compactView" name="material-symbols:expand-content-rounded" size="24" />
+          <Icon v-else name="material-symbols:close-fullscreen-rounded" size="24" />
+        </button>
+      </div>
+
+      <div v-if="!compactView" class="stats-dialog__footer">
+        <p>*От одного региона засчитывается не более 2 500 подписей. Это число показывает количество подписей с учетом этого ограничения.</p>
+        <p>
+          Все данные берутся в реальном времени с
+          <a href="https://nadezhdin2024.ru/addresses" target="_blank" style="color: var(--blue)">
+            этой&nbsp;страницы
+          </a>.
+        </p>
+        <a class="stats-dialog__author" href="https://m4l3vich.ru/" target="_blank">
+          made with 🖤 by m4l3vich
+        </a>
       </div>
     </dialog>
   </section>
@@ -143,6 +186,10 @@ const isDialogVisible = ref<boolean>(false)
     &_disabled {
       pointer-events: none;
       opacity: 0.5;
+    }
+
+    &_small {
+      padding: 4px;
     }
 
     &_spin-icon .icon {
@@ -226,6 +273,15 @@ const isDialogVisible = ref<boolean>(false)
       margin-top: 0;
     }
 
+    &_small {
+      display: flex;
+      margin-top: 0;
+
+      & li {
+        gap: 8px !important;
+      }
+    }
+
     li {
       flex: 1 0 auto;
       display: flex;
@@ -252,9 +308,14 @@ const isDialogVisible = ref<boolean>(false)
 
   &__metric {
     font-size: 36px;
+
+    &_small {
+      font-size: 16px;
+      font-weight: bold;
+    }
   }
 
-  &__footer {
+  &__buttons {
     margin-top: 16px;
     display: flex;
     align-items: center;
@@ -264,6 +325,42 @@ const isDialogVisible = ref<boolean>(false)
     @media screen and (min-width: 1200px) {
       flex: 1 0 auto;
       justify-content: flex-end;
+    }
+  }
+
+  &__footer {
+    width: 100%;
+    font-size: 12px;
+    opacity: 0.75;
+    margin-top: 8px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    p { margin: 0; }
+    a:not([class]) {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    @media screen and (max-width: 1200px) {
+      margin-top: 16px;
+    }
+
+    @media screen and (max-width: 640px) {
+      font-size: 10px;
+    }
+  }
+
+  &__author {
+    appearance: none;
+    color: black;
+    text-align: center;
+    display: block;
+
+    @media screen and (min-width: 640px) {
+      display: none;
     }
   }
 }

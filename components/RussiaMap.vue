@@ -180,6 +180,10 @@ onMounted(() => renderMap())
     opacity: 0.5;
     text-align: center;
     display: block;
+
+    @media screen and (max-width: 640px) {
+      display: none;
+    }
   }
 
   &__legend {
