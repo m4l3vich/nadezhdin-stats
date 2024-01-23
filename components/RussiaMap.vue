@@ -1,26 +1,18 @@
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { SvgPanZoom } from 'vue-svg-pan-zoom'
 import Map from '~/public/map.svg'
 
 const { regions } = defineProps<{
+  updating: boolean,
   regions: {
     name: string
     count: number
   }[]
 }>()
 
+const emit = defineEmits<{(e: 'update'): void}>()
+
 const map = ref()
-const totalCount = computed(
-  () => regions.reduce((acc, e) => acc + e.count, 0)
-)
-
-const completeRegionsCount = computed(
-  () => regions.filter(e => e.count > 2500).length
-)
-
-const quotaCount = computed(
-  () => regions.reduce((acc, e) => acc + Math.min(e.count, 2500), 0)
-)
 
 const hoverItem = ref<{ name: string, count: number | null}>()
 const hoverTop = ref<number>(0)
@@ -33,7 +25,7 @@ function mouseMoveDefault (e: MouseEvent) {
   hoverLeft.value = e.offsetX
 }
 
-onMounted(() => {
+function renderMap () {
   if (!map.value) { return }
 
   const allRegions = map.value.$el.querySelectorAll('[data-code]')
@@ -75,100 +67,152 @@ onMounted(() => {
       hoverLeft.value = e.offsetX
     })
   }
-})
+}
 </script>
 
 <template>
-  <Map ref="map" class="map-svg" width="100%" />
+  <section class="map">
+    <ClientOnly>
+      <SvgPanZoom
+        class="map__container"
+        :zoom-enabled="true"
+        :fit="true"
+        :center="true"
+        @created="renderMap"
+      >
+        <Map ref="map" class="map__svg" width="100%" height="100%" />
+      </SvgPanZoom>
+    </ClientOnly>
 
-  <div v-if="hoverItem" class="map-hover" :style="{ position: 'fixed', top: hoverTop + 'px', left: hoverLeft + 'px' }">
-    <span v-if="hoverItem.count && hoverItem.count > 0">
-      <b>{{ hoverItem.name }}</b><br>
-      {{ hoverItem.count.toLocaleString() }} / 2 500
-      ({{ ((hoverItem.count / 2500) * 100).toFixed(2) }}%)
-    </span>
-    <span v-else>
-      <b>{{ hoverItem.name }}</b><br>
-      {{ hoverItem.count === null ? 'Ждем данные' : 'Нет штаба' }}
-    </span>
-  </div>
+    <div
+      v-if="hoverItem"
+      class="map__hover"
+      :style="{ top: hoverTop + 'px', left: hoverLeft + 'px' }"
+    >
+      <span v-if="hoverItem.count && hoverItem.count > 0">
+        <b>{{ hoverItem.name }}</b><br>
+        {{ hoverItem.count.toLocaleString() }} / 2 500
+        ({{ ((hoverItem.count / 2500) * 100).toFixed(2) }}%)
+      </span>
+      <span v-else>
+        <b>{{ hoverItem.name }}</b><br>
+        {{ hoverItem.count === null ? 'Ждем данные' : 'Нет штаба' }}
+      </span>
+    </div>
 
-  <div style="display: flex; gap: 24px; align-items: center; justify-content: center;">
-    <ul class="map-legend">
-      <li style="--marker: rgba(255, 0, 0, 0.2)">
-        Нет штаба
-      </li>
-      <li style="--marker: #3B66FF">
-        Сбор идет (меньше 2 500 подписей)
-      </li>
-      <li style="--marker: #00dc82">
-        Сбор завершен (2 500+)
-      </li>
-    </ul>
+    <div class="map__legend">
+      <ul>
+        <li>
+          <span class="map__legend-marker map__legend-marker_red" />
+          Нет штаба
+        </li>
+        <li>
+          <span class="map__legend-marker map__legend-marker_blue" />
+          Меньше 2 500 подписей
+        </li>
+        <li>
+          <span class="map__legend-marker map__legend-marker_green" />
+          Больше 2 500 подписей
+        </li>
+      </ul>
+    </div>
 
-    <p class="map-stats">
-      <span>
-        Всего подписей: <strong>{{ totalCount.toLocaleString() }}</strong> из 100 000
-      </span>
-      <span>
-        2 500+ подписей собрано в <strong>{{ completeRegionsCount }}</strong> регионах
-      </span>
-      <span>
-        Подписей по квотам (2 500 макс. с региона): <strong>{{ quotaCount.toLocaleString() }}</strong>
-      </span>
-    </p>
-  </div>
+    <MapStats
+      :updating="updating"
+      :regions="regions"
+      @update="emit('update')"
+    />
+  </section>
 </template>
 
 <style lang="scss">
-.map-svg {
-  max-height: 75vh;
-  user-select: none;
-  cursor: default;
-}
+.map {
+  height: 100vh;
 
-.map-svg [data-code] {
-  fill: #3B66FF;
-  transition: fill 0.2s;
-}
+  &__svg {
+    user-select: none;
+    cursor: default;
 
-.map-svg path {
-  stroke: #FFFFFF;
-  stroke-width: 1;
-  stroke-linejoin: round;
-}
+    [data-code] {
+      fill: var(--blue);
+      transition: fill 0.2s;
+    }
 
-.map-stats {
-  font-family: sans-serif;
-  font-size: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.map-legend {
-  font-family: sans-serif;
-  font-size: 24px;
-  display: flex;
-  flex-direction: column;
-
-  li::marker {
-    color: var(--marker);
-    content: '■';
-    margin: -24px 0;
-    font-size: 42px;
+    path {
+      stroke: #FFFFFF;
+      stroke-width: 1;
+      stroke-linejoin: round;
+    }
   }
-}
 
-.map-hover {
-  font-family: sans-serif;
-  font-size: 16px;
-  background: white;
-  padding: 8px;
-  pointer-events: none;
+  &__container {
+    width: 100%;
+    height: 100vh;
 
-  b {
-    font-weight: 700;
+    // some hack
+    .svg-pan-zoom__default {
+      height: 100%;
+    }
+  }
+
+  &__hover {
+    position: fixed;
+    font-size: 16px;
+    background: white;
+    padding: 8px;
+    pointer-events: none;
+
+    b {
+      font-weight: 700;
+    }
+  }
+
+  &__legend {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+
+    @media screen and (max-width: 640px) {
+      flex-direction: column;
+      bottom: unset;
+    }
+
+    ul {
+      margin: 0;
+      display: flex;
+      list-style: none;
+      gap: 12px;
+      padding: 0;
+      font-size: 18px;
+
+      @media screen and (max-width: 640px) {
+        flex-direction: column;
+        font-size: 12px;
+      }
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+
+  &__legend-marker {
+    width: 20px;
+    height: 20px;
+    display: block;
+    line-height: 100%;
+    border-radius: 4px;
+
+    &_red { background: var(--red_translucent) }
+    &_blue { background: linear-gradient(315deg, rgba(59,102,255,1) 0%, rgba(59,102,255,1) 50%, rgba(59,102,255,0.3) 51%) }
+    &_green { background: var(--green) }
+
+    @media screen and (max-width: 640px) {
+      width: 16px;
+      height: 16px;
+    }
   }
 }
 </style>
