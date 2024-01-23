@@ -33,6 +33,7 @@ function renderMap () {
     e.setAttribute('style', 'fill: red !important')
     e.setAttribute('fill-opacity', '0.2')
     e.addEventListener('mousemove', mouseMoveDefault)
+    e.addEventListener('mouseout', () => { hoverItem.value = undefined })
   })
 
   map.value.$el.addEventListener('mouseleave', () => {
@@ -124,6 +125,11 @@ onMounted(() => renderMap())
       :regions="regions"
       @update="emit('update')"
     />
+
+    <MobileRegionModal
+      :item="hoverItem"
+      @close="() => { hoverItem = undefined }"
+    />
   </section>
 </template>
 
@@ -164,8 +170,15 @@ onMounted(() => renderMap())
     padding: 8px;
     pointer-events: none;
 
+    border-radius: 4px;
+    box-shadow: 0px 3px 8px 0px rgba(0, 0, 0, 0.3);
+
     b {
-      font-weight: 700;
+      font-weight: 600;
+    }
+
+    @media screen and (max-width: 640px) {
+      display: none;
     }
   }
 
