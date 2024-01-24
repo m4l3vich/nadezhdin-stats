@@ -60,7 +60,7 @@ body {
   --red_translucent: rgba(255, 0, 0, 0.2);
   --text: black;
   --background: white;
-  --modal_bg: #d0deed;
+  --modal_bg: #cdddee;
 
   @media screen and (prefers-color-scheme: dark) {
     --background: black;
