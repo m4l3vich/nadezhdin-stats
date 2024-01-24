@@ -11,8 +11,11 @@ type Stats = StatsRegion[]
 type FetchError = { failed: true, error: any }
 
 export default defineEventHandler(async (): Promise<Stats | FetchError> => {
+  const controller = new AbortController()
+  setTimeout(() => controller.abort(), 20000) // 20s fetch timeout
+
   try {
-    const resp = await fetch(STATS_URL)
+    const resp = await fetch(STATS_URL, { signal: controller.signal })
     const text = await resp.text()
 
     const document = parse(text)
