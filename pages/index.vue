@@ -18,7 +18,15 @@ async function update () {
     console.error(error.value, data.value)
     updateAttempt.value++
 
-    if (updateAttempt.value > 2) { return update() }
+    if (updateAttempt.value > 20) {
+      updateAttempt.value = 0
+    }
+
+    if (updateAttempt.value > 3) {
+      updating.value = true
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      return update()
+    }
     return
   } else {
     errored.value = false

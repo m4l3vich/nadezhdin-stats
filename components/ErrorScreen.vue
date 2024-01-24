@@ -26,8 +26,8 @@ const emit = defineEmits<{(e: 'update'): void}>()
       @click="emit('update')"
     >
       <Icon v-if="updating" name="material-symbols:progress-activity" />
-      <template v-if="attemptNum > 2">
-        Пробуем, пока не получится ({{ attemptNum - 1 }})
+      <template v-if="attemptNum > 3">
+        Пробуем, пока не получится ({{ attemptNum - 3 }})
       </template>
       <template v-else-if="updating">
         Пробуем снова
