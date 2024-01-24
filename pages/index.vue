@@ -1,5 +1,6 @@
 <script setup lang="ts">
 type Regions = { name: string, count: number }[]
+type FetchError = { failed: true, error: any }
 
 const regions = ref<Regions | null>(null)
 const updating = ref<boolean>(true)
@@ -11,10 +12,10 @@ async function update () {
   const { data, error } = await useFetch('/api/stats')
   updating.value = false
 
-  if (error.value) {
+  if (error.value || (data.value as FetchError).failed) {
     errored.value = true
     // eslint-disable-next-line no-console
-    console.error(error.value)
+    console.error(error.value, data.value)
     updateAttempt.value++
 
     if (updateAttempt.value > 2) { return update() }
@@ -23,6 +24,7 @@ async function update () {
     errored.value = false
   }
 
+  updateAttempt.value = 0
   regions.value = data.value as Regions
 }
 
