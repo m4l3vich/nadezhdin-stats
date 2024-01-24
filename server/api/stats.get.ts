@@ -12,7 +12,7 @@ type FetchError = { failed: true, error: any }
 
 export default defineEventHandler(async (): Promise<Stats | FetchError> => {
   const controller = new AbortController()
-  setTimeout(() => controller.abort(), 20000) // 20s fetch timeout
+  setTimeout(() => controller.abort(), 9000) // 9s fetch timeout
 
   try {
     const resp = await fetch(STATS_URL, { signal: controller.signal })
