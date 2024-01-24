@@ -160,7 +160,7 @@ const compactView = ref<boolean>(false)
     cursor: pointer;
     box-shadow: 0px 3px 8px 0px rgba(0, 0, 0, 0.3);
 
-    color: white;
+    color: var(--background);
 
     font-size: 18px;
     border-radius: 999px;
@@ -205,6 +205,7 @@ const compactView = ref<boolean>(false)
   box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, 0.2);
 
   z-index: 2;
+  color: var(--text);
 
   @media screen and (min-width: 1200px) {
     display: flex;
@@ -222,7 +223,7 @@ const compactView = ref<boolean>(false)
   width: calc(100vw - calc(var(--dialog_margin) * 2));
   box-sizing: border-box;
 
-  background: #d0deed;
+  background: var(--modal_bg);
   border: none;
   border-radius: 16px;
 
@@ -251,6 +252,7 @@ const compactView = ref<boolean>(false)
     height: 28px;
     line-height: 28px;
     cursor: pointer;
+    color: var(--text);
   }
 
   &__grid {
@@ -363,7 +365,7 @@ const compactView = ref<boolean>(false)
 
   &__author {
     appearance: none;
-    color: black;
+    color: var(--text);
     text-align: center;
     display: block;
 

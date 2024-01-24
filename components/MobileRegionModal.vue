@@ -54,7 +54,8 @@ function close () {
   width: calc(100vw - 32px);
   box-sizing: border-box;
 
-  background: #d0deed;
+  background: var(--modal_bg);
+  color: var(--text);
   border: none;
   border-radius: 16px;
 

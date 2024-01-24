@@ -35,7 +35,7 @@
   &__author {
     font-size: 12px;
     appearance: none;
-    color: black;
+    color: var(--text);
     opacity: 0.5;
   }
 }

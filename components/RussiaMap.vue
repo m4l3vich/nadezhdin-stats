@@ -30,8 +30,7 @@ function renderMap () {
 
   const allRegions = map.value.$el.querySelectorAll('[data-code]')
   allRegions.forEach((e: HTMLElement) => {
-    e.setAttribute('style', 'fill: red !important')
-    e.setAttribute('fill-opacity', '0.2')
+    e.setAttribute('style', 'fill: var(--red_translucent) !important')
     e.addEventListener('mousemove', mouseMoveDefault)
     e.addEventListener('mouseout', () => { hoverItem.value = undefined })
   })
@@ -56,9 +55,9 @@ function renderMap () {
     regionOnMap.setAttribute('fill-opacity', percent + 0.1)
 
     if (percent > 1) {
-      regionOnMap.setAttribute('style', 'fill: #00dc82 !important')
+      regionOnMap.setAttribute('style', 'fill: var(--green) !important')
     } else if (percent < 0.1) {
-      regionOnMap.setAttribute('style', 'stroke: rgba(59, 102, 255, 0.3) !important')
+      regionOnMap.setAttribute('style', 'stroke: var(--blue) !important')
     }
 
     regionOnMap.removeEventListener('mousemove', mouseMoveDefault)
@@ -150,6 +149,10 @@ onMounted(() => renderMap())
       stroke: #FFFFFF;
       stroke-width: 1;
       stroke-linejoin: round;
+
+      @media screen and (prefers-color-scheme: dark) {
+        stroke: rgba(255, 255, 255, 0.5)
+      }
     }
   }
 
@@ -166,7 +169,8 @@ onMounted(() => renderMap())
   &__hover {
     position: fixed;
     font-size: 16px;
-    background: white;
+    background: var(--background);
+    color: var(--text);
     padding: 8px;
     pointer-events: none;
 
@@ -179,6 +183,10 @@ onMounted(() => renderMap())
 
     @media screen and (max-width: 640px) {
       display: none;
+    }
+
+    @media screen and (prefers-color-scheme: dark) {
+      background: var(--modal_bg);
     }
   }
 
@@ -200,6 +208,7 @@ onMounted(() => renderMap())
   }
 
   &__legend {
+    color: var(--text);
     position: absolute;
     top: 24px;
     left: 24px;

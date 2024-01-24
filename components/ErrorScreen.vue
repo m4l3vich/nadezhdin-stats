@@ -37,7 +37,7 @@ const emit = defineEmits<{(e: 'update'): void}>()
       </template>
     </button>
 
-    <a class="preloader__author" href="https://m4l3vich.ru/" target="_blank">
+    <a class="error-screen__author" href="https://m4l3vich.ru/" target="_blank">
       made with 🖤 by m4l3vich
     </a>
   </section>
@@ -60,7 +60,7 @@ const emit = defineEmits<{(e: 'update'): void}>()
 
   &__description {
     font-size: 16px;
-    color: black;
+    color: var(--text);
     text-align: center;
     max-width: 250px;
   }
@@ -68,7 +68,7 @@ const emit = defineEmits<{(e: 'update'): void}>()
   &__author {
     font-size: 12px;
     appearance: none;
-    color: black;
+    color: var(--text);
     opacity: 0.5;
   }
 
