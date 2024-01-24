@@ -3,6 +3,7 @@ type Regions = { name: string, count: number }[]
 
 const regions = ref<Regions | null>(null)
 const updating = ref<boolean>(true)
+const updateAttempt = ref<number>(0)
 const errored = ref<boolean>(false)
 
 async function update () {
@@ -14,6 +15,9 @@ async function update () {
     errored.value = true
     // eslint-disable-next-line no-console
     console.error(error.value)
+    updateAttempt.value++
+
+    if (updateAttempt.value > 2) { return update() }
     return
   } else {
     errored.value = false
@@ -26,7 +30,12 @@ update()
 </script>
 
 <template>
-  <ErrorScreen v-if="errored" @update="update" />
+  <ErrorScreen
+    v-if="errored"
+    :updating="updating"
+    :attempt-num="updateAttempt"
+    @update="update"
+  />
   <PreloaderScreen v-else-if="regions === null" />
   <RussiaMap v-else :regions="regions" :updating="updating" @update="update" />
 </template>

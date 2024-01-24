@@ -1,4 +1,9 @@
 <script setup lang="ts">
+const { updating, attemptNum } = defineProps<{
+  updating: boolean
+  attemptNum: number
+}>()
+
 const emit = defineEmits<{(e: 'update'): void}>()
 </script>
 
@@ -17,9 +22,19 @@ const emit = defineEmits<{(e: 'update'): void}>()
 
     <button
       class="error-screen__btn"
+      :class="{ 'error-screen__btn_updating': updating }"
       @click="emit('update')"
     >
-      Повторить попытку
+      <Icon v-if="updating" name="material-symbols:progress-activity" />
+      <template v-if="attemptNum > 2">
+        Пробуем, пока не получится ({{ attemptNum - 1 }})
+      </template>
+      <template v-else-if="updating">
+        Пробуем снова
+      </template>
+      <template v-else>
+        Повторить попытку
+      </template>
     </button>
 
     <a class="preloader__author" href="https://m4l3vich.ru/" target="_blank">
@@ -80,6 +95,20 @@ const emit = defineEmits<{(e: 'update'): void}>()
     &_icon {
       padding: 8px;
     }
+
+    &_updating {
+      opacity: 0.5;
+      pointer-events: none;
+
+      .icon {
+        animation: spinner 1s infinite linear;
+      }
+    }
   }
+}
+
+@keyframes spinner {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 </style>
