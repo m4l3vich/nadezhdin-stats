@@ -125,6 +125,10 @@ const chartData = computed<ChartRegion[]>(() => {
   position: relative;
   overflow-y: auto;
 
+  @media screen and (min-width: 750px) {
+    padding-bottom: 120px;
+  }
+
   &__settings {
     border: 2px solid var(--modal_bg);
     margin: 16px 8px;
