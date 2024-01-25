@@ -31,15 +31,18 @@ async function update () {
       await new Promise(resolve => setTimeout(resolve, 1000))
       return update()
     }
-    return
   } else {
     errored.value = false
   }
 
-  updateAttempt.value = 0
-  regions.value = data.value as Regions
+  if (!errored.value) {
+    updateAttempt.value = 0
+    regions.value = data.value as Regions
+  }
 
-  autoUpdateTimeout = setTimeout(() => update(), AUTO_UPDATE_INTERVAL)
+  if (regions.value !== null) {
+    autoUpdateTimeout = setTimeout(() => update(), AUTO_UPDATE_INTERVAL)
+  }
 }
 
 update()
