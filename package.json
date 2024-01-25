@@ -34,8 +34,10 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@pinia/nuxt": "^0.5.1",
     "hammerjs": "^2.0.8",
     "node-html-parser": "^6.1.12",
+    "pinia": "^2.1.7",
     "svg-pan-zoom": "^3.6.1",
     "vue-svg-pan-zoom": "^2.1.0",
     "yandex-metrika-module-nuxt3": "^1.5.3"

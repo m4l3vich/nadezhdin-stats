@@ -1,10 +1,7 @@
 <script setup lang="ts">
-defineProps<{
-  updating: boolean
-  attemptNum: number
-}>()
+import { useStatsStore } from '~/store/stats'
 
-const emit = defineEmits<{(e: 'update'): void}>()
+const state = useStatsStore()
 </script>
 
 <template>
@@ -24,14 +21,15 @@ const emit = defineEmits<{(e: 'update'): void}>()
 
     <button
       class="error-screen__btn"
-      :class="{ 'error-screen__btn_updating': updating }"
-      @click="emit('update')"
+      :class="{ 'error-screen__btn_updating': state.updating }"
+      @click="() => state.updateStats()"
     >
-      <Icon v-if="updating" name="material-symbols:progress-activity" />
-      <template v-if="attemptNum > 3">
-        Пробуем, пока не получится ({{ attemptNum - 3 }})
+      <Icon v-if="state.updating" name="material-symbols:progress-activity" />
+
+      <template v-if="state.updateAttempt > 3">
+        Пробуем, пока не получится ({{ state.updateAttempt - 3 }})
       </template>
-      <template v-else-if="updating">
+      <template v-else-if="state.updating">
         Пробуем снова
       </template>
       <template v-else>

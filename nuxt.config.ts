@@ -3,6 +3,7 @@ import { icons } from './icons.json'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   app: {
     head: {
       title: 'Статистика Надеждина',
@@ -10,16 +11,32 @@ export default defineNuxtConfig({
       viewport: 'width=device-width, initial-scale=1'
     }
   },
-  modules: ['@nuxtjs/eslint-module', ['@nuxtjs/google-fonts', {
+
+  modules: [
+    '@nuxtjs/eslint-module',
+    '@nuxtjs/google-fonts',
+    'nuxt-svgo',
+    'nuxt-icon',
+    'yandex-metrika-module-nuxt3',
+    '@vite-pwa/nuxt',
+    '@pinia/nuxt'
+  ],
+
+  googleFonts: {
     families: { Inter: { wght: [400, 500, 600, 700] } },
     subsets: ['cyrillic']
-  }], ['nuxt-svgo', {
+  },
+
+  svgo: {
     defaultImport: 'component'
-  }], 'nuxt-icon', ['yandex-metrika-module-nuxt3', {
-    id: 96222063
-  }], ['@vite-pwa/nuxt', {
+  },
+
+  yandexMetrika: {
+    id: '96222063'
+  },
+
+  pwa: {
     registerType: 'autoUpdate',
-    devOptions: { enabled: true },
     manifest: {
       name: 'Статистика Надеждина',
       short_name: 'Статистика Надеждина',
@@ -47,5 +64,5 @@ export default defineNuxtConfig({
         form_factor: 'narrow'
       }]
     }
-  }]]
+  }
 })
