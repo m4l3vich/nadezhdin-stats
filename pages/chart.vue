@@ -64,7 +64,9 @@ const chartData = computed<ChartRegion[]>(() => {
 <template>
   <section class="chart">
     <div class="chart__settings">
-      <p class="chart__setting-title">Показать % от:</p>
+      <p class="chart__setting-title">
+        Показать % от:
+      </p>
       <label>
         <input
           v-model="showPercentFromTotal"
@@ -84,6 +86,15 @@ const chartData = computed<ChartRegion[]>(() => {
         >
         Общего количества ({{ totalCount.toLocaleString() }})
       </label>
+
+      <button
+        class="chart__btn"
+        :class="{ 'chart__btn_updating': state.updating }"
+        @click="() => state.updateStats()"
+      >
+        <Icon name="material-symbols:refresh-rounded" size="24" />
+        Обновить
+      </button>
     </div>
 
     <ul class="chart__list">
@@ -116,12 +127,42 @@ const chartData = computed<ChartRegion[]>(() => {
 
   &__settings {
     border: 2px solid var(--modal_bg);
-    margin: 16px 0;
+    margin: 16px 8px;
     padding: 16px;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: 8px;
     border-radius: 16px;
+  }
+
+  &__btn {
+    margin-top: 8px;
+
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 3px 8px 0px rgba(0, 0, 0, 0.3);
+
+    background: #6d8094;
+    color: white;
+
+    font-size: 18px;
+    border-radius: 999px;
+    padding: 8px 16px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: none;
+
+    &_updating {
+      pointer-events: none;
+      opacity: 0.5;
+
+      .icon {
+        animation: spinner 1s infinite linear;
+      }
+    }
   }
 
   &__setting-title {
@@ -138,13 +179,14 @@ const chartData = computed<ChartRegion[]>(() => {
 
   ul {
     display: grid;
-    gap: 24px 8px;
+    gap: 16px;
 
     margin: 0;
     padding: 16px;
     list-style: none;
 
     @media screen and (min-width: 640px) {
+      gap: 24px 8px;
       grid-template-columns: 250px 1fr;
       align-items: center;
     }
@@ -183,9 +225,14 @@ const chartData = computed<ChartRegion[]>(() => {
     padding: 8px 12px;
     padding-right: 0;
     box-sizing: border-box;
-    text-wrap: nowrap;
+    white-space: nowrap;
     overflow: hidden;
     color: var(--background);
   }
+}
+
+@keyframes spinner {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 </style>
