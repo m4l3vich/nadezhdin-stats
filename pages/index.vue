@@ -7,7 +7,11 @@ const updating = ref<boolean>(true)
 const updateAttempt = ref<number>(0)
 const errored = ref<boolean>(false)
 
+const AUTO_UPDATE_INTERVAL = 60000 // 60 seconds
+let autoUpdateTimeout: number | NodeJS.Timeout
+
 async function update () {
+  clearTimeout(autoUpdateTimeout)
   updating.value = true
   const { data, error } = await useFetch('/api/stats')
   updating.value = false
@@ -34,6 +38,8 @@ async function update () {
 
   updateAttempt.value = 0
   regions.value = data.value as Regions
+
+  autoUpdateTimeout = setTimeout(() => update(), AUTO_UPDATE_INTERVAL)
 }
 
 update()

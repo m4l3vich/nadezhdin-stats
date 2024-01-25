@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import Map from '~/assets/map.svg'
 
-const { regions } = defineProps<{
+const props = defineProps<{
   updating: boolean,
   regions: {
     name: string
@@ -39,7 +38,7 @@ function renderMap () {
     hoverItem.value = undefined
   })
 
-  for (const region of regions) {
+  for (const region of props.regions) {
     const regionOnMap = map.value.$el.querySelector(
       `[data-title*="${region.name}" i]`
     )
@@ -69,7 +68,7 @@ function renderMap () {
   }
 }
 
-onMounted(() => renderMap())
+watch(() => props.regions, () => renderMap(), { deep: true, immediate: true })
 </script>
 
 <template>

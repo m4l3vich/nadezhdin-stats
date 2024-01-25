@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { item } = defineProps<{
+defineProps<{
   item?: { name: string, count: number | null }
 }>()
 

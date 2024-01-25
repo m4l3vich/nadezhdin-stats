@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { regions } = defineProps<{
+const props = defineProps<{
   updating: boolean,
   regions: {
     name: string
@@ -10,15 +10,15 @@ const { regions } = defineProps<{
 const emit = defineEmits<{(e: 'update'): void}>()
 
 const totalCount = computed(
-  () => regions.reduce((acc, e) => acc + e.count, 0)
+  () => props.regions.reduce((acc, e) => acc + e.count, 0)
 )
 
 const completeRegionsCount = computed(
-  () => regions.filter(e => e.count > 2500).length
+  () => props.regions.filter(e => e.count > 2500).length
 )
 
 const quotaCount = computed(
-  () => regions.reduce((acc, e) => acc + Math.min(e.count, 2500), 0)
+  () => props.regions.reduce((acc, e) => acc + Math.min(e.count, 2500), 0)
 )
 
 const dialog = ref<HTMLDialogElement>()
@@ -114,8 +114,8 @@ const compactView = ref<boolean>(false)
         <p>
           Все данные берутся в реальном времени с
           <a href="https://nadezhdin2024.ru/addresses" target="_blank" style="color: var(--blue)">
-            этой&nbsp;страницы
-          </a>.
+            этой&nbsp;страницы.
+          </a>
         </p>
         <a class="stats-dialog__author" href="https://m4l3vich.ru/" target="_blank">
           made with 🖤 by m4l3vich

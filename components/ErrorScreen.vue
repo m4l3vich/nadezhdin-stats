@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { updating, attemptNum } = defineProps<{
+defineProps<{
   updating: boolean
   attemptNum: number
 }>()
