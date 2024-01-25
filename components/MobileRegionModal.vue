@@ -21,7 +21,7 @@ function close () {
   <dialog class="region-modal" :open="openStateOverride ?? item !== undefined">
     <header class="region-modal__header">
       {{ item?.name }}
-      <button class="stats-dialog__close-btn" @click="close">
+      <button class="region-modal__close-btn" @click="close">
         <Icon name="material-symbols:close-rounded" />
       </button>
     </header>
@@ -41,6 +41,20 @@ function close () {
   @media screen and (min-width: 640px) {
     display: none;
   }
+
+  &__close-btn {
+    border: none;
+    background: none;
+    font-size: 28px;
+    padding: 0;
+    margin: 0;
+    height: 28px;
+    line-height: 28px;
+    cursor: pointer;
+    color: var(--text);
+  }
+
+  z-index: 1;
 
   display: block;
   visibility: hidden;

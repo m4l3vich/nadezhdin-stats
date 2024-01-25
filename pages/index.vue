@@ -47,13 +47,19 @@ update()
 
 <template>
   <ErrorScreen
-    v-if="errored"
+    v-if="errored && regions === null"
     :updating="updating"
     :attempt-num="updateAttempt"
     @update="update"
   />
   <PreloaderScreen v-else-if="regions === null" />
-  <RussiaMap v-else :regions="regions" :updating="updating" @update="update" />
+  <RussiaMap
+    v-else
+    v-model:errored="errored"
+    :regions="regions"
+    :updating="updating"
+    @update="update"
+  />
 </template>
 
 <style lang="scss">
@@ -85,5 +91,9 @@ body {
     --text: white;
     --red_translucent: rgba(255, 108, 108, 0.4)
   }
+}
+
+button:focus {
+  outline: none;
 }
 </style>

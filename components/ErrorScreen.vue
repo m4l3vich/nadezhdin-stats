@@ -17,7 +17,9 @@ const emit = defineEmits<{(e: 'update'): void}>()
     <span>Ошибка</span>
 
     <p class="error-screen__description">
-      Что-то пошло не так при получении данных с сайта Бориса Надеждина.
+      Что-то пошло не так при получении данных с
+      <a href="https://nadezhdin2024.ru/addresses" target="_blank">сайта Бориса Надеждина.</a>
+      Возможно, сайт недоступен.
     </p>
 
     <button
@@ -63,6 +65,11 @@ const emit = defineEmits<{(e: 'update'): void}>()
     color: var(--text);
     text-align: center;
     max-width: 250px;
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
   }
 
   &__author {

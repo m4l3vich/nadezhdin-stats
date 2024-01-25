@@ -2,6 +2,7 @@
 import Map from '~/assets/map.svg'
 
 const props = defineProps<{
+  errored: boolean,
   updating: boolean,
   regions: {
     name: string
@@ -9,7 +10,10 @@ const props = defineProps<{
   }[]
 }>()
 
-const emit = defineEmits<{(e: 'update'): void}>()
+const emit = defineEmits<{
+  (e: 'update'): void
+  (e: 'update:errored'): void
+}>()
 
 const map = ref()
 
@@ -68,7 +72,7 @@ function renderMap () {
   }
 }
 
-watch(() => props.regions, () => renderMap(), { deep: true, immediate: true })
+watch(() => props.regions, () => renderMap(), { deep: true })
 onMounted(() => renderMap())
 </script>
 
@@ -128,6 +132,11 @@ onMounted(() => renderMap())
     <MobileRegionModal
       :item="hoverItem"
       @close="() => { hoverItem = undefined }"
+    />
+
+    <ErrorModal
+      :open="errored"
+      @update:open="emit('update:errored', false)"
     />
   </section>
 </template>
