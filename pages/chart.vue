@@ -88,10 +88,13 @@ const chartData = computed<ChartRegion[]>(() => {
 
     <ul class="chart__list">
       <template
-        v-for="region of chartData"
+        v-for="(region, index) of chartData"
         :key="region.name"
       >
-        <li class="chart__region-name" v-text="region.name" />
+        <li class="chart__region-name">
+          <strong>№{{ index + 1 }}</strong>: {{ region.name }}
+        </li>
+
         <li
           class="chart__region-bar"
           :class="{ 'chart__region-bar_complete': (region.count ?? 0) > 2500 }"
@@ -142,7 +145,7 @@ const chartData = computed<ChartRegion[]>(() => {
     list-style: none;
 
     @media screen and (min-width: 640px) {
-      grid-template-columns: 200px 1fr;
+      grid-template-columns: 250px 1fr;
       align-items: center;
     }
   }
