@@ -1,6 +1,7 @@
 export interface Region {
   name: string
-  count: number
+  count: number | null,
+  foreign: boolean
 }
 type FetchError = { failed: true, error: any }
 

@@ -4,7 +4,7 @@ const STATS_URL = 'https://nadezhdin2024.ru/addresses'
 
 interface StatsRegion {
   name: string,
-  count: number | null
+  count: number | null,
 }
 
 type Stats = StatsRegion[]
@@ -21,20 +21,23 @@ export default defineEventHandler(async (): Promise<Stats | FetchError> => {
     const document = parse(text)
     const regions = document.querySelectorAll('.addresses-page__region')
 
-    return regions.map((el) => {
-      const name = el.querySelector('h3.subheading')?.innerText ?? ''
-      const progress = el.querySelector('.progressbar__el__text')
+    return regions
+      .map((el) => {
+        const name = el.querySelector('h3.subheading')?.innerText ?? ''
+        const progress = el.querySelector('.progressbar__el__text')
 
-      if (!progress) { return { name, count: null } }
+        if (!progress) { return { name, count: null, foreign: true } }
 
-      let match = progress.innerText.match(/(\d+) \/ \d+/)
-      if (!match) {
-        match = progress.innerText.match(/ (\d+)/)
-        if (!match) { return { name, count: null } }
-      }
+        let match = progress.innerText.match(/(\d+) \/ \d+/)
+        if (!match) {
+          match = progress.innerText.match(/ (\d+)/)
+          if (!match) { return { name, count: null, foreign: false } }
+        }
 
-      return { name, count: Number(match[1]) }
-    })
+        return { name, count: Number(match[1]), foreign: false }
+      })
+      .filter(e => !e.foreign)
+      .map(({ name, count }) => ({ name, count }))
   } catch (err) {
     return { failed: true, error: err }
   }

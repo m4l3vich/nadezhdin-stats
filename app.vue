@@ -11,7 +11,11 @@ state.updateStats()
 
     <ErrorPage v-if="state.errored && state.regions === null" />
     <PreloaderPage v-else-if="state.regions === null" />
-    <NuxtPage v-else />
+
+    <template v-else>
+      <NuxtPage />
+      <AppNavigation />
+    </template>
   </main>
 </template>
 
@@ -44,6 +48,16 @@ body {
     --text: white;
     --red_translucent: rgba(255, 108, 108, 0.4)
   }
+}
+
+main {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: hidden;
+
+  display: flex;
+  flex-direction: column;
 }
 
 button:focus {

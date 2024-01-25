@@ -42,7 +42,7 @@ function renderMap () {
       continue
     }
 
-    const percent = region.count / 2500
+    const percent = (region.count ?? 0) / 2500
     regionOnMap.removeAttribute('style')
     regionOnMap.setAttribute('fill-opacity', percent + 0.1)
 
@@ -130,7 +130,8 @@ onMounted(() => renderMap())
 
 <style lang="scss">
 .map {
-  height: 100vh;
+  flex: 1 0 auto;
+  position: relative;
 
   &__svg {
     user-select: none;
@@ -154,7 +155,7 @@ onMounted(() => renderMap())
 
   &__container {
     width: 100%;
-    height: 100vh;
+    height: 100%;
 
     // some hack
     .svg-pan-zoom__default {
@@ -193,7 +194,7 @@ onMounted(() => renderMap())
 
     font-size: 12px;
     appearance: none;
-    color: black;
+    color: var(--text);
     opacity: 0.5;
     text-align: center;
     display: block;
