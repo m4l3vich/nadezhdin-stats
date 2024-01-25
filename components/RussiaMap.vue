@@ -69,6 +69,7 @@ function renderMap () {
 }
 
 watch(() => props.regions, () => renderMap(), { deep: true, immediate: true })
+onMounted(() => renderMap())
 </script>
 
 <template>
