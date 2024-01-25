@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import Map from '~/public/map.svg'
+import Map from '~/assets/map.svg'
 
 const { regions } = defineProps<{
   updating: boolean,
