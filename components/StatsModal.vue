@@ -262,13 +262,13 @@ const compactView = ref<boolean>(false)
   &__metric {
     font-size: 36px;
 
+    @media screen and (max-width: 640px) {
+      font-size: 24px;
+    }
+
     &_small {
       font-size: 16px;
       font-weight: bold;
-    }
-
-    @media screen and (max-width: 640px) {
-      font-size: 24px;
     }
   }
 
