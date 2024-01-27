@@ -48,6 +48,7 @@
     li { flex: 1; }
     border: none;
     padding: 4px 0;
+    padding-bottom: env(safe-area-inset-bottom, 4px);
   }
 
   &__link {

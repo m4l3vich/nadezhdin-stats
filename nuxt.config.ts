@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     head: {
       title: 'Статистика Надеждина',
       charset: 'utf-8',
-      viewport: 'width=device-width, initial-scale=1',
+      viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
 
       link: [
         { rel: 'apple-touch-icon', href: 'apple-touch-icon.png' },
@@ -49,10 +49,12 @@ export default defineNuxtConfig({
 
   pwa: {
     registerType: 'autoUpdate',
+    devOptions: { enabled: true },
     manifest: {
       name: 'Статистика Надеждина',
       short_name: 'Статистика',
       description: 'Статистика собранных/отсортированных подписей Бориса Надеждина по регионам',
+      display: 'standalone',
       icons,
       screenshots: [{
         src: 'screenshots/desktop_light.jpg',
