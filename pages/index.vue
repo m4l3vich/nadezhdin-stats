@@ -92,7 +92,7 @@ onMounted(() => renderMap())
       </span>
       <span v-else>
         <b>{{ hoverItem.name }}</b><br>
-        {{ hoverItem.count === null ? 'Ждем данные' : 'Нет штаба' }}
+        {{ hoverItem.count === null ? 'Ждем данные' : 'Нет данных' }}
       </span>
     </div>
 
@@ -100,7 +100,7 @@ onMounted(() => renderMap())
       <ul>
         <li>
           <span class="map__legend-marker map__legend-marker_red" />
-          Нет штаба
+          Нет данных
         </li>
         <li>
           <span class="map__legend-marker map__legend-marker_blue" />
