@@ -64,10 +64,10 @@ const compactView = ref<boolean>(false)
             v-model="state.showSorted"
             type="radio"
             name="chart-scale"
-            :value="false"
+            :value="true"
             :disabled="state.updating"
           >
-          Собранные подписи
+          Отсортированные
         </label>
 
         <label>
@@ -75,10 +75,10 @@ const compactView = ref<boolean>(false)
             v-model="state.showSorted"
             type="radio"
             name="chart-scale"
-            :value="true"
+            :value="false"
             :disabled="state.updating"
           >
-          Отсортированные
+          Собранные подписи
         </label>
       </div>
 
@@ -140,8 +140,8 @@ const compactView = ref<boolean>(false)
       <div v-if="!compactView" class="stats-dialog__footer">
         <p>*От одного региона засчитывается не более 2 500 подписей. Это число показывает количество подписей с учетом этого ограничения.</p>
         <p>
-          Все данные берутся в реальном времени с
-          <a href="https://nadezhdin2024.ru/addresses" target="_blank" style="color: var(--blue)">
+          Все данные {{ state.showSorted ? 'об отсортированных' : 'о собранных' }} подписях берутся в реальном времени с
+          <a :href="state.showSorted ? 'https://nadezhdin2024.ru/signatures' : 'https://nadezhdin2024.ru/addresses'" target="_blank" style="color: var(--blue)">
             этой&nbsp;страницы.
           </a>
         </p>
@@ -289,6 +289,10 @@ const compactView = ref<boolean>(false)
     margin-top: 16px;
 
     @media screen and (max-width: 640px) {
+      flex-direction: column;
+    }
+
+    @media screen and (min-width: 1200px) {
       flex-direction: column;
     }
   }

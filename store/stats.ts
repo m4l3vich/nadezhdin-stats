@@ -15,7 +15,7 @@ export const useStatsStore = defineStore({
     regions: null as Region[] | null,
     errored: false,
     updating: false,
-    showSorted: false,
+    showSorted: true,
     updateAttempt: 0
   }),
 

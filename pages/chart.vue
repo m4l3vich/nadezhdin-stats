@@ -91,16 +91,6 @@ const chartData = computed<ChartRegion[]>(() => {
       <p class="chart__setting-title" style="margin-top: 8px;">
         Показать количество:
       </p>
-      <label>
-        <input
-          v-model="state.showSorted"
-          type="radio"
-          name="chart-scale"
-          :value="false"
-          :disabled="state.updating"
-        >
-        Собранных подписей
-      </label>
 
       <label>
         <input
@@ -111,6 +101,17 @@ const chartData = computed<ChartRegion[]>(() => {
           :disabled="state.updating"
         >
         Отсортированных подписей
+      </label>
+
+      <label>
+        <input
+          v-model="state.showSorted"
+          type="radio"
+          name="chart-scale"
+          :value="false"
+          :disabled="state.updating"
+        >
+        Собранных подписей
       </label>
 
       <button
