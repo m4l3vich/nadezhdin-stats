@@ -19,13 +19,11 @@ const state = useStatsStore()
       Возможно, сайт недоступен.
     </p>
 
-    <button
-      class="error-screen__btn"
-      :class="{ 'error-screen__btn_updating': state.updating }"
+    <VButton
+      outlined
+      :progress="state.updating"
       @click="() => state.updateStats()"
     >
-      <Icon v-if="state.updating" name="material-symbols:progress-activity" />
-
       <template v-if="state.updateAttempt > 3">
         Пробуем, пока не получится ({{ state.updateAttempt - 3 }})
       </template>
@@ -35,7 +33,7 @@ const state = useStatsStore()
       <template v-else>
         Повторить попытку
       </template>
-    </button>
+    </VButton>
 
     <a class="error-screen__author" href="https://m4l3vich.ru/" target="_blank">
       made with 🖤 by m4l3vich

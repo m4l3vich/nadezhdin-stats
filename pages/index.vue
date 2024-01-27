@@ -117,12 +117,7 @@ onMounted(() => renderMap())
       </ul>
     </div>
 
-    <MapStats
-      v-if="state.regions !== null"
-      :updating="state.updating"
-      :regions="state.regions"
-      @update="() => state.updateStats()"
-    />
+    <MapStats v-if="state.regions !== null" />
 
     <MobileRegionModal
       :item="hoverItem"
@@ -137,6 +132,7 @@ onMounted(() => renderMap())
 .map {
   flex: 1 0 auto;
   position: relative;
+  overflow: hidden;
 
   &__svg {
     user-select: none;

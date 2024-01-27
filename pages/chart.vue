@@ -150,17 +150,17 @@ const chartData = computed<ChartRegion[]>(() => {
           name="chart-scale"
           value="sorted"
         >
-        Отсортированных подписей от собранных
+        От собранных по региону
       </label>
 
-      <button
-        class="chart__btn"
-        :class="{ 'chart__btn_updating': state.updating }"
+      <VButton
+        class="chart__update-btn"
+        color="grey"
+        :progress="state.updating"
+        icon="material-symbols:refresh-rounded"
+        label="Обновить"
         @click="() => state.updateStats()"
-      >
-        <Icon name="material-symbols:refresh-rounded" size="24" />
-        Обновить
-      </button>
+      />
     </div>
 
     <ul class="chart__list">
@@ -206,33 +206,8 @@ const chartData = computed<ChartRegion[]>(() => {
     border-radius: 16px;
   }
 
-  &__btn {
+  &__update-btn {
     margin-top: 8px;
-
-    border: none;
-    cursor: pointer;
-    box-shadow: 0px 3px 8px 0px rgba(0, 0, 0, 0.3);
-
-    background: #6d8094;
-    color: white;
-
-    font-size: 18px;
-    border-radius: 999px;
-    padding: 8px 16px;
-
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: none;
-
-    &_updating {
-      pointer-events: none;
-      opacity: 0.5;
-
-      .icon {
-        animation: spinner 1s infinite linear;
-      }
-    }
   }
 
   &__setting-title {

@@ -45,9 +45,9 @@
   }
 
   @media screen and (max-width: 750px) {
-    li {
-      flex: 1;
-    }
+    li { flex: 1; }
+    border: none;
+    padding: 4px 0;
   }
 
   &__link {
