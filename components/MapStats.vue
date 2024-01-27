@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useStatsStore } from '~/store/stats'
 const state = useStatsStore()
-watch(() => state.showSorted, () => state.updateStats())
 
 const props = defineProps<{
   updating: boolean,
@@ -67,7 +66,7 @@ const compactView = ref<boolean>(false)
             :value="true"
             :disabled="state.updating"
           >
-          Отсортированные
+          Отсортированные подписи
         </label>
 
         <label>

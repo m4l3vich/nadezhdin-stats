@@ -2,7 +2,6 @@
 import { useStatsStore, type Region } from '~/store/stats'
 
 const state = useStatsStore()
-watch(() => state.showSorted, () => state.updateStats())
 
 interface ChartRegion {
   name: string
@@ -11,7 +10,7 @@ interface ChartRegion {
   label: string
 }
 
-const showPercentFromTotal = ref<boolean>(false)
+const showPercentFrom = ref<'target' | 'total' | 'sorted'>('target')
 
 const totalCount = computed(() => {
   if (state.regions === null) { return 1 }
@@ -33,7 +32,7 @@ const chartData = computed<ChartRegion[]>(() => {
     const { name, count } = region
     let percent: number
 
-    if (showPercentFromTotal.value === true) {
+    if (showPercentFrom.value === 'total') {
       const biggestVotesNum = Math.max(...(state.regions as Region[]).map(e => e.count ?? 0))
       percent = (count ?? 0) / biggestVotesNum
     } else {
@@ -43,17 +42,48 @@ const chartData = computed<ChartRegion[]>(() => {
     let label
     if (count === null) {
       label = 'Ждем данные от штаба'
-    } else if (showPercentFromTotal.value === true) {
-      const percentFromTotal = (count ?? 0) / totalCount.value
-      const percentStr = (percentFromTotal * 100).toFixed(3)
-      const countStr = count.toLocaleString()
-      label = `${countStr} (${percentStr}%)`
-    } else {
-      const percentStr = (percent * 100).toFixed(2)
-      const countStr = count.toLocaleString()
-      label = `${countStr} из 2 500 (${percentStr}%)`
+      return { name, count, percent: 0, label }
     }
 
+    switch (showPercentFrom.value) {
+      case 'total': {
+        const biggestVotesNum = Math.max(...(state.regions as Region[]).map(e => e.count ?? 0))
+        percent = (count ?? 0) / biggestVotesNum
+
+        const percentFromTotal = (count ?? 0) / totalCount.value
+        const percentStr = (percentFromTotal * 100).toFixed(3)
+        const countStr = count.toLocaleString()
+        label = `${countStr} (${percentStr}%)`
+        break
+      }
+      case 'target': {
+        percent = (count ?? 0) / 2500
+
+        const percentStr = (percent * 100).toFixed(2)
+        const countStr = count.toLocaleString()
+        label = `${countStr} из 2 500 (${percentStr}%)`
+        break
+      }
+      case 'sorted': {
+        const collectedVotesRegion = state.regionsCollected?.find(e => (
+          e.name.toLowerCase().includes(region.name.toLowerCase()) ||
+          region.name.toLowerCase().includes(e.name.toLowerCase())
+        ))
+
+        const countStr = count.toLocaleString()
+
+        if (collectedVotesRegion && collectedVotesRegion?.count) {
+          percent = (count ?? 0) / (collectedVotesRegion?.count ?? 0)
+          const percentStr = (percent * 100).toFixed(2)
+          const collectedCountStr = collectedVotesRegion.count.toLocaleString()
+          label = `${countStr} из ${collectedCountStr} (${percentStr}%)`
+        } else {
+          label = `${countStr} из (Н/Д)`
+        }
+
+        break
+      }
+    }
     return { name, count, percent, label }
   })
 
@@ -66,37 +96,13 @@ const chartData = computed<ChartRegion[]>(() => {
   <section class="chart">
     <div class="chart__settings">
       <p class="chart__setting-title">
-        Показать % от:
-      </p>
-      <label>
-        <input
-          v-model="showPercentFromTotal"
-          type="radio"
-          name="chart-scale"
-          :value="false"
-        >
-        Цели (2 500 подписей)
-      </label>
-
-      <label>
-        <input
-          v-model="showPercentFromTotal"
-          type="radio"
-          name="chart-scale"
-          :value="true"
-        >
-        Общего количества ({{ totalCount.toLocaleString() }})
-      </label>
-
-      <p class="chart__setting-title" style="margin-top: 8px;">
         Показать количество:
       </p>
-
       <label>
         <input
           v-model="state.showSorted"
           type="radio"
-          name="chart-scale"
+          name="chart-type"
           :value="true"
           :disabled="state.updating"
         >
@@ -107,11 +113,44 @@ const chartData = computed<ChartRegion[]>(() => {
         <input
           v-model="state.showSorted"
           type="radio"
-          name="chart-scale"
+          name="chart-type"
           :value="false"
           :disabled="state.updating"
         >
         Собранных подписей
+      </label>
+
+      <p class="chart__setting-title" style="margin-top: 8px;">
+        Показать %:
+      </p>
+      <label>
+        <input
+          v-model="showPercentFrom"
+          type="radio"
+          name="chart-scale"
+          value="target"
+        >
+        От цели (2 500 подписей)
+      </label>
+
+      <label>
+        <input
+          v-model="showPercentFrom"
+          type="radio"
+          name="chart-scale"
+          value="total"
+        >
+        От общего количества ({{ totalCount.toLocaleString() }})
+      </label>
+
+      <label v-if="state.showSorted">
+        <input
+          v-model="showPercentFrom"
+          type="radio"
+          name="chart-scale"
+          value="sorted"
+        >
+        Отсортированных подписей от собранных
       </label>
 
       <button
