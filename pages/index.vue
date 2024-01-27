@@ -110,6 +110,10 @@ onMounted(() => renderMap())
           <span class="map__legend-marker map__legend-marker_green" />
           Больше 2 500 подписей
         </li>
+        <li>
+          <span class="map__legend-marker map__legend-marker_grey" />
+          Нет штаба
+        </li>
       </ul>
     </div>
 
@@ -152,7 +156,6 @@ onMounted(() => renderMap())
       pointer-events: none;
 
       @media screen and (prefers-color-scheme: dark) {
-        // stroke: rgba(0, 0, 0, 0.1) !important
         fill: rgba(255, 255, 255, 0.1) !important;
       }
     }
@@ -261,6 +264,14 @@ onMounted(() => renderMap())
     &_red { background: var(--red_translucent) }
     &_blue { background: linear-gradient(315deg, rgba(59,102,255,1) 0%, rgba(59,102,255,1) 50%, rgba(59,102,255,0.3) 51%) }
     &_green { background: var(--green) }
+    &_grey {
+      background: rgba(0, 0, 0, 0.2) !important;
+
+      @media screen and (prefers-color-scheme: dark) {
+        border: 1px solid #FFFFFF;
+        background: rgba(255, 255, 255, 0.1) !important;
+      }
+    }
 
     @media screen and (max-width: 640px) {
       width: 16px;
