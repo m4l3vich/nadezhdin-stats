@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useStatsStore } from '~/store/stats'
+const state = useStatsStore()
+
 defineProps<{
   item?: { name: string, count: number | null }
 }>()
@@ -32,6 +35,13 @@ function close () {
     </p>
     <p v-else class="region-modal__count">
       {{ item?.count === null ? 'Ждем данные' : 'Нет штаба' }}
+    </p>
+
+    <p class="region-modal__footer">
+      Все данные {{ state.showSorted ? 'об отсортированных' : 'о собранных' }} подписях берутся в реальном времени с
+      <a :href="state.showSorted ? 'https://nadezhdin2024.ru/signatures' : 'https://nadezhdin2024.ru/addresses'" target="_blank" style="color: var(--blue)">
+        этой&nbsp;страницы.
+      </a>
     </p>
   </dialog>
 </template>
@@ -94,6 +104,23 @@ function close () {
     margin: 0;
     margin-top: 8px;
     font-weight: 500;
+  }
+
+  &__footer {
+    width: 100%;
+    font-size: 12px;
+    opacity: 0.75;
+    margin-top: 16px;
+    margin-bottom: 0;
+
+    a:not([class]) {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    @media screen and (max-width: 640px) {
+      font-size: 12px;
+    }
   }
 }
 </style>
