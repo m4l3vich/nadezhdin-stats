@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Map from '~/assets/map.svg'
+import { regionsMap } from '~/regionMappings'
 import { useStatsStore } from '~/store/stats'
 
 const state = useStatsStore()
@@ -33,9 +34,8 @@ function renderMap () {
   })
 
   for (const region of state.regions) {
-    const regionOnMap = map.value.$el.querySelector(
-      `[data-title*="${region.name}" i]`
-    )
+    const regionCode = regionsMap[region.name]
+    const regionOnMap = map.value.$el.querySelector(`[data-code="${regionCode}"]`)
 
     if (!regionOnMap) {
       // eslint-disable-next-line no-console

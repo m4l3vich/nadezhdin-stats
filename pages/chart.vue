@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { regionsMap } from '~/regionMappings';
 import { useStatsStore, type Region } from '~/store/stats'
 
 const state = useStatsStore()
@@ -21,14 +22,6 @@ const chartData = computed<ChartRegion[]>(() => {
   if (state.regions === null) { return [] }
 
   const regionsWithPercent = state.regions.map((region) => {
-  //   region => ({
-  //   name: region.name,
-  //   count: region.count,
-  //   percent: (region.count ?? 0) / 2500,
-  //   label: region.count === null
-  //     ? 'Ждем данные от штаба'
-  //     : `${region.count.toLocaleString()} из 2 500 (${(this.percent * 100).toFixed(2)}%)`
-  // })
     const { name, count } = region
     let percent: number
 
@@ -65,10 +58,10 @@ const chartData = computed<ChartRegion[]>(() => {
         break
       }
       case 'sorted': {
-        const collectedVotesRegion = state.regionsCollected?.find(e => (
-          e.name.toLowerCase().includes(region.name.toLowerCase()) ||
-          region.name.toLowerCase().includes(e.name.toLowerCase())
-        ))
+        const regionCode = regionsMap[region.name]
+        const collectedVotesRegion = state.regionsCollected?.find(
+          e => regionsMap[e.name] === regionCode
+        )
 
         const countStr = count.toLocaleString()
 
