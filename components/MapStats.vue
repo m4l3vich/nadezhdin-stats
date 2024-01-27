@@ -290,6 +290,7 @@ const compactView = ref<boolean>(false)
 
     @media screen and (max-width: 640px) {
       flex-direction: column;
+      font-size: 14px;
     }
 
     @media screen and (min-width: 1200px) {
@@ -336,6 +337,10 @@ const compactView = ref<boolean>(false)
       align-items: center;
       justify-content: center;
       gap: 16px;
+
+      @media screen and (max-width: 640px) {
+        gap: 8px;
+      }
     }
   }
 
@@ -358,6 +363,10 @@ const compactView = ref<boolean>(false)
     &_small {
       font-size: 16px;
       font-weight: bold;
+    }
+
+    @media screen and (max-width: 640px) {
+      font-size: 24px;
     }
   }
 
