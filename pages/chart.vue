@@ -2,6 +2,7 @@
 import { useStatsStore, type Region } from '~/store/stats'
 
 const state = useStatsStore()
+watch(() => state.showSorted, () => state.updateStats())
 
 interface ChartRegion {
   name: string
@@ -85,6 +86,31 @@ const chartData = computed<ChartRegion[]>(() => {
           :value="true"
         >
         Общего количества ({{ totalCount.toLocaleString() }})
+      </label>
+
+      <p class="chart__setting-title" style="margin-top: 8px;">
+        Показать количество:
+      </p>
+      <label>
+        <input
+          v-model="state.showSorted"
+          type="radio"
+          name="chart-scale"
+          :value="false"
+          :disabled="state.updating"
+        >
+        Собранных подписей
+      </label>
+
+      <label>
+        <input
+          v-model="state.showSorted"
+          type="radio"
+          name="chart-scale"
+          :value="true"
+          :disabled="state.updating"
+        >
+        Отсортированных подписей
       </label>
 
       <button

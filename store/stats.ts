@@ -15,6 +15,7 @@ export const useStatsStore = defineStore({
     regions: null as Region[] | null,
     errored: false,
     updating: false,
+    showSorted: false,
     updateAttempt: 0
   }),
 
@@ -22,7 +23,7 @@ export const useStatsStore = defineStore({
     async updateStats (): Promise<void> {
       clearTimeout(autoUpdateTimeout)
       this.updating = true
-      const { data, error } = await useFetch('/api/stats')
+      const { data, error } = await useFetch(this.showSorted ? '/api/sorted' : '/api/stats')
       this.updating = false
 
       if (error.value || (data.value as FetchError).failed) {

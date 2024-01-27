@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useStatsStore } from '~/store/stats'
+const state = useStatsStore()
+watch(() => state.showSorted, () => state.updateStats())
+
 const props = defineProps<{
   updating: boolean,
   regions: {
@@ -53,6 +57,30 @@ const compactView = ref<boolean>(false)
           <Icon name="material-symbols:close-rounded" />
         </button>
       </header>
+
+      <div v-if="!compactView" class="stats-dialog__switch">
+        <label>
+          <input
+            v-model="state.showSorted"
+            type="radio"
+            name="chart-scale"
+            :value="false"
+            :disabled="state.updating"
+          >
+          Собранные подписи
+        </label>
+
+        <label>
+          <input
+            v-model="state.showSorted"
+            type="radio"
+            name="chart-scale"
+            :value="true"
+            :disabled="state.updating"
+          >
+          Отсортированные
+        </label>
+      </div>
 
       <ul class="stats-dialog__grid" :class="{ 'stats-dialog__grid_small': compactView }">
         <li>
@@ -253,6 +281,16 @@ const compactView = ref<boolean>(false)
     line-height: 28px;
     cursor: pointer;
     color: var(--text);
+  }
+
+  &__switch {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+
+    @media screen and (max-width: 640px) {
+      flex-direction: column;
+    }
   }
 
   &__grid {

@@ -22,6 +22,7 @@ function renderMap () {
 
   const allRegions = map.value.$el.querySelectorAll('[data-code]')
   allRegions.forEach((e: HTMLElement) => {
+    e.removeAttribute('fill-opacity')
     e.setAttribute('style', 'fill: var(--red_translucent) !important')
     e.addEventListener('mousemove', mouseMoveDefault)
     e.addEventListener('mouseout', () => { hoverItem.value = undefined })
