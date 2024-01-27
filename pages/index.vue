@@ -148,8 +148,13 @@ onMounted(() => renderMap())
     [data-code="RU-DON"],
     [data-code="RU-LUG"],
     [data-code="RU-CR"] {
-      fill: rgba(255, 255, 255, 0.1) !important;
+      fill: rgba(0, 0, 0, 0.2) !important;
       pointer-events: none;
+
+      @media screen and (prefers-color-scheme: dark) {
+        // stroke: rgba(0, 0, 0, 0.1) !important
+        fill: rgba(255, 255, 255, 0.1) !important;
+      }
     }
 
     path {
