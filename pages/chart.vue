@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { regionsMap } from '~/regionMappings';
+import { regionsMap } from '~/regionMappings'
 import { useStatsStore, type Region } from '~/store/stats'
 
 const state = useStatsStore()
@@ -64,6 +64,7 @@ const chartData = computed<ChartRegion[]>(() => {
           const collectedCountStr = collectedVotesRegion.count.toLocaleString()
           label = `${countStr} из ${collectedCountStr} (${percentStr}%)`
         } else {
+          percent = 1
           label = `${countStr} из (Н/Д)`
         }
 

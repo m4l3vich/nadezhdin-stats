@@ -3,6 +3,27 @@ import { useStatsStore } from '~/store/stats'
 
 const state = useStatsStore()
 state.updateStats()
+
+const themeColor = ref('#000000')
+
+if (window && window.matchMedia) {
+  const media = window.matchMedia('(prefers-color-scheme: dark)')
+  themeColor.value = media.matches ? '#000000' : '#ffffff'
+  media.addEventListener('change', () => {
+    themeColor.value = media.matches ? '#000000' : '#ffffff'
+  })
+}
+
+useHead({
+  meta: [{ name: 'theme-color', content: themeColor }]
+})
+
+useSeoMeta({
+  title: 'Статистика Надеждина',
+  ogTitle: 'Статистика Надеждина',
+  description: 'Статистика собранных/отсортированных подписей Бориса Надеждина по регионам',
+  ogDescription: 'Статистика собранных/отсортированных подписей Бориса Надеждина по регионам'
+})
 </script>
 
 <template>
