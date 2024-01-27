@@ -23,14 +23,7 @@ const chartData = computed<ChartRegion[]>(() => {
 
   const regionsWithPercent = state.regions.map((region) => {
     const { name, count } = region
-    let percent: number
-
-    if (showPercentFrom.value === 'total') {
-      const biggestVotesNum = Math.max(...(state.regions as Region[]).map(e => e.count ?? 0))
-      percent = (count ?? 0) / biggestVotesNum
-    } else {
-      percent = (count ?? 0) / 2500
-    }
+    let percent: number = 0
 
     let label
     if (count === null) {
@@ -77,6 +70,7 @@ const chartData = computed<ChartRegion[]>(() => {
         break
       }
     }
+
     return { name, count, percent, label }
   })
 
