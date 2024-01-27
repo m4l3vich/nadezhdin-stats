@@ -23,7 +23,7 @@ function renderMap () {
   const allRegions = map.value.$el.querySelectorAll('[data-code]')
   allRegions.forEach((e: HTMLElement) => {
     e.removeAttribute('fill-opacity')
-    e.setAttribute('style', 'fill: var(--red_translucent) !important')
+    e.setAttribute('style', 'fill: var(--red_translucent)')
     e.addEventListener('mousemove', mouseMoveDefault)
     e.addEventListener('mouseout', () => { hoverItem.value = undefined })
   })
@@ -141,6 +141,15 @@ onMounted(() => renderMap())
     [data-code] {
       fill: var(--blue);
       transition: fill 0.2s;
+    }
+
+    [data-code="RU-HR"],
+    [data-code="RU-ZP"],
+    [data-code="RU-DON"],
+    [data-code="RU-LUG"],
+    [data-code="RU-CR"] {
+      fill: rgba(255, 255, 255, 0.1) !important;
+      pointer-events: none;
     }
 
     path {
