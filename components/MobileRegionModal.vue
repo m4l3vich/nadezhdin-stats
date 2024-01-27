@@ -38,10 +38,7 @@ function close () {
     </p>
 
     <p class="region-modal__footer">
-      Все данные {{ state.showSorted ? 'об отсортированных' : 'о собранных' }} подписях берутся в реальном времени с
-      <a :href="state.showSorted ? 'https://nadezhdin2024.ru/signatures' : 'https://nadezhdin2024.ru/addresses'" target="_blank" style="color: var(--blue)">
-        этой&nbsp;страницы.
-      </a>
+      Все данные {{ state.showSorted ? 'об отсортированных' : 'о собранных' }} подписях берутся в реальном времени с сайта Бориса Надеждина.
     </p>
   </dialog>
 </template>
