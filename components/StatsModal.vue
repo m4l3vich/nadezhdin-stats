@@ -154,6 +154,9 @@ const compactView = ref<boolean>(false)
     &__switch { grid-area: switch }
     &__buttons { grid-area: buttons }
     &__footer { grid-area: footer }
+
+    // ughhhh I hate Safari
+    height: auto;
   }
 
   --dialog_margin: 24px;
