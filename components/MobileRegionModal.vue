@@ -34,7 +34,7 @@ function close () {
       ({{ ((item?.count / 2500) * 100).toFixed(2) }}%)
     </p>
     <p v-else class="region-modal__count">
-      {{ item?.count === null ? 'Ждем данные' : 'Нет штаба' }}
+      {{ item?.count === null ? 'Ждем данные' : 'Нет данных' }}
     </p>
 
     <p class="region-modal__footer">
