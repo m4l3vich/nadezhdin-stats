@@ -102,6 +102,7 @@ const compactView = ref<boolean>(false)
       </VButton>
 
       <VButton
+        class="stats-modal__compact-btn"
         color="grey"
         :icon="compactView
           ? 'material-symbols:expand-content-rounded'
@@ -138,8 +139,21 @@ const compactView = ref<boolean>(false)
   color: var(--text);
 
   @media screen and (min-width: 1200px) {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto 1fr auto auto;
+    gap: 0px 0px;
+    grid-template-areas:
+      "header header"
+      "stats switch"
+      "stats buttons"
+      "footer footer";
+
+    &__header { grid-area: header }
+    &__stats { grid-area: stats }
+    &__switch { grid-area: switch }
+    &__buttons { grid-area: buttons }
+    &__footer { grid-area: footer }
   }
 
   --dialog_margin: 24px;
@@ -278,11 +292,6 @@ const compactView = ref<boolean>(false)
     align-items: center;
     justify-content: center;
     gap: 16px;
-
-    @media screen and (min-width: 1200px) {
-      flex: 1 0 auto;
-      justify-content: flex-end;
-    }
   }
 
   &__compact-btn {
