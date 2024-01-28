@@ -1,5 +1,5 @@
 <script setup lang="ts">
-withDefaults(
+const props = withDefaults(
   defineProps<{
     icon?: string | undefined
     label?: string | undefined
@@ -10,10 +10,25 @@ withDefaults(
   }>(),
   { color: 'blue', icon: undefined, label: undefined }
 )
+
+const button = ref<HTMLButtonElement>()
+const spinIcon = ref<boolean>(props.progress)
+
+watch(() => props.progress, (val) => {
+  if (val) {
+    spinIcon.value = true
+  } else if (button.value) {
+    const icon = button.value.querySelector('.icon')
+    icon?.addEventListener('animationiteration', () => {
+      spinIcon.value = false
+    }, { once: true })
+  }
+})
 </script>
 
 <template>
   <button
+    ref="button"
     type="button"
     class="v-button"
     :class="{
@@ -21,6 +36,7 @@ withDefaults(
       'v-button_outlined': outlined,
       'v-button_small': small,
       'v-button_progress': progress,
+      'v-button_spin-icon': spinIcon,
       [`v-button_color_${color}`]: true
     }"
   >
@@ -73,7 +89,9 @@ withDefaults(
   &_progress {
     pointer-events: none;
     opacity: 0.5;
+  }
 
+  &_spin-icon {
     .icon {
       animation: spinner 1s infinite linear;
     }
